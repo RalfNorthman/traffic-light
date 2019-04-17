@@ -52,15 +52,12 @@ animationUpdate model delta =
         second =
             delta / 1000
 
-        speed =
-            5 / 10
-
         time =
             model.seconds + second
     in
     { model
-        | patternCircleCX = 20 + 5 * cos (3 * time)
-        , patternCircleCY = 20 + 3 * cos (2 * time)
+        | patternCircleCX = 20 + 5 * cos (11 / 3 * time)
+        , patternCircleCY = 20 + 7 * cos (7 / 3 * time)
         , seconds = time
     }
 
