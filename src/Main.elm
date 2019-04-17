@@ -81,14 +81,14 @@ trafficLight model =
                     [ id "pattern"
                     , x (px model.two)
                     , y (px model.one)
-                    , height (px 20)
-                    , width (px 20)
+                    , height (px <| 9 + model.one / 3)
+                    , width (px <| 6 + model.two / 2)
                     , patternUnits CoordinateSystemUserSpaceOnUse
                     ]
                     [ circle
                         [ cx (px model.one)
                         , cy (px model.two)
-                        , r (px 15)
+                        , r (px <| 18 + model.one / 3 - model.two / 2)
                         , fill <| Fill <| Color.rgb 0 0 0.2
                         , strokeWidth (px <| 3 + model.two / 3 - model.one / 5)
                         , stroke <| Color.rgba 0.7 0.2 0.3 0.3
