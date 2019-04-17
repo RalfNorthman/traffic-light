@@ -59,7 +59,7 @@ animationUpdate model delta =
     in
     { model
         | one = 18 + 2 * cos (11 / 3 * time)
-        , two = 18 + 2 * cos (7 / 3 * time)
+        , two = 18 + 2 * sin (7 / 3 * time)
         , seconds = time
     }
 
