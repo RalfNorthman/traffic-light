@@ -3,6 +3,8 @@ module Main exposing (main)
 import Browser
 import Browser.Events
 import Color
+import Element exposing (Element)
+import Element.Background as Background
 import Html exposing (Html)
 import Html.Attributes exposing (id)
 import TypedSvg exposing (circle, defs, pattern, rect, svg)
@@ -15,16 +17,16 @@ import TypedSvg.Types exposing (..)
 
 
 type alias Model =
-    { patternCircleCX : Float
-    , patternCircleCY : Float
+    { one : Float
+    , two : Float
     , seconds : Float
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { patternCircleCX = 20
-      , patternCircleCY = 20
+    ( { one = 20
+      , two = 20
       , seconds = 0
       }
     , Cmd.none
@@ -56,8 +58,8 @@ animationUpdate model delta =
             model.seconds + second
     in
     { model
-        | patternCircleCX = 20 + 5 * cos (11 / 3 * time)
-        , patternCircleCY = 20 + 7 * cos (7 / 3 * time)
+        | one = 18 + 2 * cos (11 / 3 * time)
+        , two = 18 + 2 * cos (7 / 3 * time)
         , seconds = time
     }
 
@@ -66,39 +68,50 @@ animationUpdate model delta =
 ---- View ----
 
 
+trafficLight : Model -> Element msg
+trafficLight model =
+    Element.html <|
+        svg
+            [ width <| percent 100
+            , height <| px 500
+            ]
+            [ defs
+                []
+                [ pattern
+                    [ id "pattern"
+                    , x (px model.two)
+                    , y (px model.one)
+                    , height (px 20)
+                    , width (px 20)
+                    , patternUnits CoordinateSystemUserSpaceOnUse
+                    ]
+                    [ circle
+                        [ cx (px model.one)
+                        , cy (px model.two)
+                        , r (px 15)
+                        , fill <| Fill <| Color.rgb 0 0 0.2
+                        , strokeWidth (px <| 3 + model.two / 3 - model.one / 5)
+                        , stroke <| Color.rgba 0.7 0.2 0.3 0.3
+                        ]
+                        []
+                    ]
+                ]
+            , circle
+                [ style "fill: url(#pattern)"
+                , cx (px 220)
+                , cy (px 220)
+                , r (px 200)
+                ]
+                []
+            ]
+
+
 view : Model -> Html msg
 view model =
-    svg
-        [ width <| percent 100, height <| px 500 ]
-        [ defs
-            []
-            [ pattern
-                [ id "pattern"
-                , x (px 20)
-                , y (px 20)
-                , height (px 20)
-                , width (px 20)
-                , patternUnits CoordinateSystemUserSpaceOnUse
-                ]
-                [ circle
-                    [ cx (px model.patternCircleCX)
-                    , cy (px model.patternCircleCY)
-                    , r (px 18)
-                    , fill <| Fill Color.charcoal
-                    , strokeWidth (px 8)
-                    , stroke <| Color.rgba 0.8 0.1 0.5 0.5
-                    ]
-                    []
-                ]
-            ]
-        , circle
-            [ style "fill: url(#pattern)"
-            , cx (px 220)
-            , cy (px 220)
-            , r (px 200)
-            ]
-            []
-        ]
+    Element.layout
+        [ Background.color <| Element.rgb 0 0 0 ]
+    <|
+        trafficLight model
 
 
 
