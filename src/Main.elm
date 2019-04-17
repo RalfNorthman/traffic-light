@@ -1,9 +1,11 @@
 module Main exposing (main)
 
+import Browser
 import Browser.Events
 import Color
 import Html exposing (Html)
 import Html.Attributes exposing (id)
+import Time exposing (Posix)
 import TypedSvg exposing (circle, defs, pattern, rect, svg)
 import TypedSvg.Attributes exposing (..)
 import TypedSvg.Types exposing (..)
@@ -17,13 +19,13 @@ type alias Model =
     { something : Int }
 
 
-init : flags -> ( Model, Cmd Msg )
+init : () -> ( Model, Cmd Msg )
 init _ =
     ( { something = 0 }, Cmd.none )
 
 
 type Msg
-    = NoOp
+    = AnimationFrame Posix
 
 
 
@@ -33,7 +35,7 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        NoOp ->
+        AnimationFrame _ ->
             ( model, Cmd.none )
 
 
@@ -41,8 +43,8 @@ update msg model =
 ---- View ----
 
 
-view : Html msg
-view =
+view : Model -> Html msg
+view model =
     svg
         [ width <| percent 100, height <| px 500 ]
         [ defs
@@ -80,10 +82,19 @@ view =
 ---- Subscriptions ----
 
 
-main : Program flags Model Msg
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Browser.Events.onAnimationFrame AnimationFrame
+
+
+
+---- Main ----
+
+
 main =
-    { init = init
-    , view = view
-    , update = update
-    , subscriptions = subscriptions
-    }
+    Browser.element
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        }

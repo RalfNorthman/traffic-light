@@ -12,7 +12,9 @@ badd +75 term://.//1285:/bin/bash
 badd +19 ~/Dokument/my-vimrc/README.md
 badd +59 term://.//5658:/bin/bash
 badd +1 src/Main.elm
-badd +1 term://.//1284:/bin/bash
+badd +3 term://.//1284:/bin/bash
+badd +6 notepad.txt
+badd +0 term://.//26681:/bin/bash
 argglobal
 silent! argdel *
 $argadd ~/
@@ -25,7 +27,10 @@ vsplit
 wincmd w
 wincmd _ | wincmd |
 split
-1wincmd k
+wincmd _ | wincmd |
+split
+2wincmd k
+wincmd w
 wincmd w
 wincmd t
 set winminheight=0
@@ -33,10 +38,12 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 exe 'vert 1resize ' . ((&columns * 87 + 87) / 174)
-exe '2resize ' . ((&lines * 23 + 24) / 49)
+exe '2resize ' . ((&lines * 15 + 24) / 49)
 exe 'vert 2resize ' . ((&columns * 86 + 87) / 174)
-exe '3resize ' . ((&lines * 23 + 24) / 49)
+exe '3resize ' . ((&lines * 15 + 24) / 49)
 exe 'vert 3resize ' . ((&columns * 86 + 87) / 174)
+exe '4resize ' . ((&lines * 15 + 24) / 49)
+exe 'vert 4resize ' . ((&columns * 86 + 87) / 174)
 argglobal
 if bufexists('src/Main.elm') | buffer src/Main.elm | else | edit src/Main.elm | endif
 setlocal fdm=manual
@@ -48,15 +55,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 17 - ((10 * winheight(0) + 23) / 47)
+let s:l = 22 - ((21 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
-normal! 04|
+22
+normal! 013|
 wincmd w
 argglobal
-if bufexists('term://.//1284:/bin/bash') | buffer term://.//1284:/bin/bash | else | edit term://.//1284:/bin/bash | endif
+if bufexists('notepad.txt') | buffer notepad.txt | else | edit notepad.txt | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -65,11 +72,29 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 2 - ((1 * winheight(0) + 11) / 23)
+silent! normal! zE
+let s:l = 7 - ((6 * winheight(0) + 7) / 15)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-2
+7
+normal! 0
+wincmd w
+argglobal
+if bufexists('term://.//26681:/bin/bash') | buffer term://.//26681:/bin/bash | else | edit term://.//26681:/bin/bash | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+let s:l = 6 - ((5 * winheight(0) + 7) / 15)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+6
 normal! 024|
 wincmd w
 argglobal
@@ -82,20 +107,21 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 17 - ((16 * winheight(0) + 11) / 23)
+let s:l = 450 - ((14 * winheight(0) + 7) / 15)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
+450
 normal! 0
 lcd ~/
 wincmd w
-2wincmd w
 exe 'vert 1resize ' . ((&columns * 87 + 87) / 174)
-exe '2resize ' . ((&lines * 23 + 24) / 49)
+exe '2resize ' . ((&lines * 15 + 24) / 49)
 exe 'vert 2resize ' . ((&columns * 86 + 87) / 174)
-exe '3resize ' . ((&lines * 23 + 24) / 49)
+exe '3resize ' . ((&lines * 15 + 24) / 49)
 exe 'vert 3resize ' . ((&columns * 86 + 87) / 174)
+exe '4resize ' . ((&lines * 15 + 24) / 49)
+exe 'vert 4resize ' . ((&columns * 86 + 87) / 174)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
