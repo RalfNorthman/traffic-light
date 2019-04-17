@@ -5,7 +5,6 @@ import Browser.Events
 import Color
 import Html exposing (Html)
 import Html.Attributes exposing (id)
-import Time exposing (Posix)
 import TypedSvg exposing (circle, defs, pattern, rect, svg)
 import TypedSvg.Attributes exposing (..)
 import TypedSvg.Types exposing (..)
@@ -16,16 +15,24 @@ import TypedSvg.Types exposing (..)
 
 
 type alias Model =
-    { something : Int }
+    { patternCircleCX : Float
+    , patternCircleCY : Float
+    , seconds : Float
+    }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { something = 0 }, Cmd.none )
+    ( { patternCircleCX = 20
+      , patternCircleCY = 20
+      , seconds = 0
+      }
+    , Cmd.none
+    )
 
 
 type Msg
-    = AnimationFrame Posix
+    = AnimationDelta Float
 
 
 
@@ -35,8 +42,27 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        AnimationFrame _ ->
-            ( model, Cmd.none )
+        AnimationDelta delta ->
+            ( animationUpdate model delta, Cmd.none )
+
+
+animationUpdate : Model -> Float -> Model
+animationUpdate model delta =
+    let
+        second =
+            delta / 1000
+
+        speed =
+            5 / 10
+
+        time =
+            model.seconds + second
+    in
+    { model
+        | patternCircleCX = 20 + 5 * cos (3 * time)
+        , patternCircleCY = 20 + 3 * cos (2 * time)
+        , seconds = time
+    }
 
 
 
@@ -58,8 +84,8 @@ view model =
                 , patternUnits CoordinateSystemUserSpaceOnUse
                 ]
                 [ circle
-                    [ cx (px 20)
-                    , cy (px 20)
+                    [ cx (px model.patternCircleCX)
+                    , cy (px model.patternCircleCY)
                     , r (px 18)
                     , fill <| Fill Color.charcoal
                     , strokeWidth (px 8)
@@ -84,7 +110,7 @@ view model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Browser.Events.onAnimationFrame AnimationFrame
+    Browser.Events.onAnimationFrameDelta AnimationDelta
 
 
 
